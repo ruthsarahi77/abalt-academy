@@ -1,26 +1,369 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --abalt-red: #c8102e;
+  --abalt-red-dark: #9f0d25;
+  --ink: #25282a;
+  --surface: #f5f6f6;
+  --background: #fff;
+  --foreground: #25282a;
+  --card: #fff;
+  --card-foreground: #25282a;
+  --popover: #fff;
+  --popover-foreground: #25282a;
+  --primary: #25282a;
+  --primary-foreground: #fff;
+  --secondary: #f5f6f6;
+  --secondary-foreground: #25282a;
+  --muted: #f5f6f6;
+  --muted-foreground: #686d70;
+  --accent: #f5f6f6;
+  --accent-foreground: #25282a;
+  --destructive: #b42318;
+  --border: #dde0e2;
+  --input: #cfd3d5;
+  --ring: #c8102e;
+  --radius: 0.375rem;
 }
 
 @theme inline {
+  --color-abalt: var(--abalt-red);
+  --color-abalt-dark: var(--abalt-red-dark);
+  --color-ink: var(--ink);
+  --color-surface: var(--surface);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-line: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-open-sans);
+  --font-heading: var(--font-open-sans);
+  --radius-sm: calc(var(--radius) * 0.66);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) * 1.33);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+* {
+  box-sizing: border-box;
+}
+html {
+  background: var(--background);
+}
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  color: var(--ink);
+  font-family: var(--font-open-sans), Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+::selection {
+  background: #f8d7dd;
+  color: var(--ink);
+}
+:focus-visible {
+  outline: 3px solid var(--abalt-red);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.section-shell {
+  width: 100%;
+  max-width: 90rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+.section-space {
+  padding-block: 5rem;
+}
+.section-eyebrow,
+.content-meta {
+  color: var(--abalt-red);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.section-title {
+  margin-top: 0.6rem;
+  font-size: clamp(2rem, 5vw, 3.35rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+}
+.section-description {
+  margin-top: 1.25rem;
+  max-width: 44rem;
+  color: var(--muted-foreground);
+  font-size: 1.08rem;
+  line-height: 1.75;
+}
+
+.nav-link {
+  position: relative;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  gap: 0.3rem;
+  padding-inline: 0.8rem;
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+.nav-link::after {
+  position: absolute;
+  inset-inline: 0.8rem;
+  bottom: 0;
+  height: 2px;
+  background: var(--abalt-red);
+  content: "";
+  transform: scaleX(0);
+  transition: transform 0.18s;
+}
+.nav-link:hover,
+.nav-dropdown[open] > .nav-link {
+  color: var(--abalt-red);
+}
+.nav-link:hover::after,
+.nav-dropdown[open] > .nav-link::after {
+  transform: scaleX(1);
+}
+.nav-dropdown > summary::-webkit-details-marker {
+  display: none;
+}
+
+.locale-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: var(--muted-foreground);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.locale-label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.locale-label svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+.locale-select-wrap {
+  position: relative;
+  display: block;
+  color: var(--ink);
+}
+.locale-select {
+  width: 100%;
+  height: 2.15rem;
+  appearance: none;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  padding: 0 1.35rem 0 0;
+  color: var(--ink);
+  font:
+    700 0.73rem/1 var(--font-open-sans),
+    Arial,
+    sans-serif;
+  cursor: pointer;
+}
+[dir="rtl"] .locale-select {
+  padding: 0 0 0 1.35rem;
+}
+.locale-select:hover,
+.locale-select:focus {
+  border-color: var(--abalt-red);
+  color: var(--abalt-red);
+}
+.locale-select:focus-visible {
+  outline: 2px solid var(--abalt-red);
+  outline-offset: 2px;
+}
+.locale-chevron {
+  position: absolute;
+  inset-inline-end: 0.1rem;
+  top: 50%;
+  width: 0.75rem;
+  height: 0.75rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.locale-select-country {
+  min-width: 7rem;
+}
+.locale-select-language {
+  min-width: 6.75rem;
+}
+
+.content-visual {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 11rem;
+  background: #dfe2e3;
+  color: #fff;
+}
+.content-visual::before,
+.knowledge-visual::before {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    130deg,
+    transparent 0 40%,
+    rgba(255, 255, 255, 0.16) 40% 56%,
+    transparent 56%
+  );
+  content: "";
+}
+.content-visual::after {
+  position: absolute;
+  inset: -20% -10% auto auto;
+  width: 68%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  content: "";
+}
+.content-visual-publication {
+  background: #3d4447;
+}
+.content-visual-newsletter {
+  background: #7b1c2c;
+}
+.content-visual-podcast {
+  background: #36383a;
+}
+.content-visual-mark {
+  position: absolute;
+  inset: auto auto 1.1rem 1.25rem;
+  z-index: 1;
+  font-size: 3rem;
+  font-weight: 300;
+  line-height: 1;
+}
+.content-visual-label {
+  position: absolute;
+  inset: 1rem 1rem auto auto;
+  z-index: 1;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.knowledge-card {
+  display: block;
+  transition: color 0.2s;
+}
+.knowledge-card:hover h3 {
+  color: var(--abalt-red);
+}
+.knowledge-visual {
+  position: relative;
+  display: flex;
+  aspect-ratio: 16/7;
+  align-items: flex-end;
+  overflow: hidden;
+  padding: 1.25rem;
+  background: #34383a;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+.knowledge-visual-audio {
+  background: #7b1c2c;
+}
+.knowledge-visual-learning {
+  background: #555d61;
+}
+.knowledge-visual-video {
+  background: #222526;
+}
+.knowledge-visual-article {
+  background: #777e80;
+}
+.knowledge-visual-guide {
+  background: #4e2630;
+}
+.filter-chip {
+  min-height: 2.65rem;
+  border: 1px solid var(--border);
+  background: #fff;
+  padding: 0.55rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition:
+    border-color 0.15s,
+    color 0.15s,
+    background 0.15s;
+}
+.filter-chip:hover {
+  border-color: var(--abalt-red);
+  color: var(--abalt-red);
+}
+.filter-chip-active {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #fff;
+}
+.filter-chip-active:hover {
+  border-color: var(--ink);
+  color: #fff;
+}
+.podcast-cover {
+  background:
+    radial-gradient(circle at 50% 50%, #5b6062 0 2px, transparent 3px) 0 0/18px
+      18px,
+    #292d2f;
+}
+
+@media (min-width: 640px) {
+  .section-shell {
+    padding-inline: 2rem;
+  }
+  .section-space {
+    padding-block: 6.5rem;
+  }
+}
+@media (min-width: 1280px) {
+  .section-shell {
+    padding-inline: 2.5rem;
+  }
 }

@@ -1,0 +1,5 @@
+"use client";
+import { ArrowRight,Globe2 } from "lucide-react";
+import { useLocale } from "../LocaleProvider";
+
+export function InternationalSection(){const{t}=useLocale();return <section className="bg-white" aria-labelledby="international-title"><div className="section-shell section-space"><div className="relative overflow-hidden border-y border-ink py-12 sm:py-16"><Globe2 aria-hidden="true" className="absolute -end-12 top-1/2 size-64 -translate-y-1/2 text-surface sm:end-4 sm:size-80"/><div className="relative max-w-3xl"><p className="section-eyebrow">{t.internationalEyebrow}</p><h2 id="international-title" className="section-title mt-4">{t.internationalTitle}</h2><p className="section-description">{t.internationalText}</p><a href="https://abaltecuador.com/" target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 border-b border-ink pb-1 font-bold hover:border-abalt hover:text-abalt">{t.internationalCta}<ArrowRight aria-hidden="true" className="size-4"/></a></div></div></div></section>}
