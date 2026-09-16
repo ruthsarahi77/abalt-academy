@@ -1,5 +1,5 @@
 import type { AcademyContent } from "./content-types";
-import { publications } from "./publications";
+import { news } from "./news";
 
 export const podcastEpisodes: AcademyContent[] = [
   {
@@ -15,7 +15,6 @@ export const podcastEpisodes: AcademyContent[] = [
     language: "es",
     countries: ["EC"],
     publishedAt: "2026-09-02",
-    featured: true,
     
     url: "#podcast",
     translations: {
@@ -30,6 +29,14 @@ export const podcastEpisodes: AcademyContent[] = [
 ];
 
 export const academyContent: AcademyContent[] = [
-  ...publications,
+  ...news.map((item): AcademyContent => ({
+    ...item,
+    slug: item.slug ?? item.id,
+    description: item.description ?? "",
+    topics: item.topics ?? [],
+    language: item.language ?? "es",
+    contentType: item.contentType ?? "news",
+    publishedAt: item.date,
+  })),
   ...podcastEpisodes,
 ];

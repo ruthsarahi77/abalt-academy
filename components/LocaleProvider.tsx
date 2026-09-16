@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import { canStorePreferences, initializeCookieConsent } from "@/lib/cookie-consent";
 import {
   countries,
   COUNTRY_STORAGE_KEY,
@@ -33,12 +34,19 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguageState] = useState<LanguageCode>(DEFAULT_LANGUAGE);
 
   useEffect(() => {
-    const savedCountry = localStorage.getItem(COUNTRY_STORAGE_KEY);
-    const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-    queueMicrotask(() => {
-      if (isCountryCode(savedCountry)) setCountryState(savedCountry);
-      if (isLanguageCode(savedLanguage)) setLanguageState(savedLanguage);
+    let active = true;
+    void initializeCookieConsent().then(() => {
+      if (!active || !canStorePreferences()) return;
+      try {
+        const savedCountry = localStorage.getItem(COUNTRY_STORAGE_KEY);
+        const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+        if (isCountryCode(savedCountry)) setCountryState(savedCountry);
+        if (isLanguageCode(savedLanguage)) setLanguageState(savedLanguage);
+      } catch {
+        // Keep the default locale if storage is disabled by the browser.
+      }
     });
+    return () => { active = false; };
   }, []);
 
   useEffect(() => {
@@ -52,13 +60,21 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
     )!.defaultLanguage;
     setCountryState(nextCountry);
     setLanguageState(nextLanguage);
-    localStorage.setItem(COUNTRY_STORAGE_KEY, nextCountry);
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
+    if (canStorePreferences()) {
+      try {
+        localStorage.setItem(COUNTRY_STORAGE_KEY, nextCountry);
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
+      } catch { /* Locale selection still works without persistent storage. */ }
+    }
   }
 
   function setLanguage(nextLanguage: LanguageCode) {
     setLanguageState(nextLanguage);
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
+    if (canStorePreferences()) {
+      try {
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
+      } catch { /* Locale selection still works without persistent storage. */ }
+    }
   }
 
   const t = { ...translations[language], ...homeTranslations[language] };

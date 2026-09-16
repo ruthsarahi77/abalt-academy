@@ -45,11 +45,43 @@ export interface AcademyContent extends ContentTranslation {
   imageAlt?: string;
   url?: string;
   pdfUrl?: string;
-  featured?: boolean;
   translations?: Partial<Record<LanguageCode, ContentTranslation>>;
 }
 
-export function localizeContent<T extends AcademyContent>(content: T, language: LanguageCode) {
+/** Optional editorial metadata shared with the existing content model. */
+type EditorialFields = Partial<Omit<AcademyContent, "id" | "title" | "publishedAt" | "url" | "pdfUrl" | "contentType">>;
+
+export type NewsItem = EditorialFields & {
+  id: string;
+  title: string;
+  /** Publication date, YYYY-MM-DD. The only authored date field. */
+  date: string;
+  pdfUrl: string;
+  contentType?: "news" | "publication" | "newsletter";
+  code?: string;
+};
+
+export type CourseStatus = "draft" | "upcoming" | "open" | "closed" | "completed";
+export type Course = EditorialFields & {
+  id: string;
+  title: string;
+  /** Catalog publication date, YYYY-MM-DD; not the course start date. */
+  date: string;
+  url: string;
+  status: CourseStatus;
+  startsAt?: string;
+};
+
+export type Product = EditorialFields & {
+  id: string;
+  title: string;
+  url: string;
+  type: string;
+  /** Catalog publication date, YYYY-MM-DD, required for chronological selection. */
+  date: string;
+};
+
+export function localizeContent<T extends { translations?: AcademyContent["translations"] }>(content: T, language: LanguageCode) {
   return { ...content, ...(content.translations?.[language] ?? {}) };
 }
 

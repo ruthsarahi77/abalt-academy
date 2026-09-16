@@ -1,14 +1,17 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { ArrowUpRight, Search } from "lucide-react";
 import type { AcademyContent } from "@/data/content-types";
 import { getContentUrl, localizeContent } from "@/data/content-types";
 import { normalizeSearch } from "@/lib/content";
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { useLocale } from "../LocaleProvider";
 
 export function GlobalSearch({ content }: { content: AcademyContent[] }) {
   const { t, language } = useLocale();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const results = useMemo(() => {
     const term = normalizeSearch(query);
@@ -30,20 +33,23 @@ export function GlobalSearch({ content }: { content: AcademyContent[] }) {
   }, [content, language, query]);
 
   return (
-    <section className="border-b border-line bg-white" aria-labelledby="global-search-title">
-      <div className="section-shell py-14 sm:py-18">
-        <h2
-          id="global-search-title"
-          className="text-2xl font-semibold tracking-[-.03em] sm:text-3xl"
-        >
-          {t.searchTitle}
-        </h2>
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger aria-label={t.searchLabel} className="inline-flex size-11 shrink-0 items-center justify-center rounded-md text-ink transition-colors hover:bg-surface hover:text-abalt focus-visible:ring-2 focus-visible:ring-abalt">
+        <Search aria-hidden="true" className="size-5" />
+      </SheetTrigger>
+      <SheetContent side="top" initialFocus={inputRef} className="max-h-dvh overflow-y-auto bg-white">
+        <div className="mx-auto w-full max-w-3xl px-5 py-6 sm:px-8">
+          <SheetHeader className="p-0 pe-8">
+            <SheetTitle>{t.searchTitle}</SheetTitle>
+            <SheetDescription className="sr-only">{t.searchLabel}</SheetDescription>
+          </SheetHeader>
         <div className="group relative mt-5 sm:mt-6">
           <Search
             aria-hidden="true"
             className="absolute inset-y-0 start-4 my-auto size-5 text-abalt sm:start-5 sm:size-[1.375rem]"
           />
           <input
+            ref={inputRef}
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
@@ -64,6 +70,7 @@ export function GlobalSearch({ content }: { content: AcademyContent[] }) {
                   <a
                     key={item.id}
                     href={getContentUrl(item)}
+                    onClick={() => setOpen(false)}
                     className="group flex items-center justify-between gap-4 border-b border-line px-5 py-4 last:border-0 hover:bg-surface"
                   >
                     <span>
@@ -85,6 +92,7 @@ export function GlobalSearch({ content }: { content: AcademyContent[] }) {
           </div>
         )}
       </div>
-    </section>
+      </SheetContent>
+    </Sheet>
   );
 }

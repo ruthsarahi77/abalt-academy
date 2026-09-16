@@ -1,78 +1,33 @@
-"use client";
+import Link from "next/link";
 import Image from "next/image";
-import { useLocale } from "./LocaleProvider";
+
+const legalLinks = [
+  { label: "Declaraci\u00f3n de Privacidad", href: "/privacidad" },
+  { label: "T\u00e9rminos Legales", href: "/terminos-legales" },
+  { label: "Cookies", href: "/cookies" },
+  { label: "Acerca del proveedor de este sitio", href: "/proveedor-del-sitio" },
+];
 
 export function Footer() {
-  const { t } = useLocale();
-  const groups = [
-    {
-      title: t.footerKnowledge,
-      links: [t.publicationsNav, t.articles, t.guides, t.podcast],
-    },
-    {
-      title: t.footerAcademy,
-      links: [t.courses, t.webinars, t.programs, t.events],
-    },
-    {
-      title: t.footerCompany,
-      links: [t.about, t.internationalEyebrow, t.footerContact],
-    },
-  ];
   return (
-    <footer className="bg-[#17191a] text-white">
-      <div className="section-shell py-14 sm:py-18">
-        <div className="border-b border-white/15 pb-10 sm:pb-12">
-          <div className="grid gap-12 lg:grid-cols-[1.2fr_2fr]">
-            <div>
-              <Image
-                src="/abalt-logo.svg"
-                alt="ABALT Ecuador"
-                width={150}
-                height={47}
-                className="brightness-0 invert"
-              />
-              <p className="mt-6 max-w-sm text-sm leading-7 text-white/60">
-                {t.services}
-              </p>
-              <p className="mt-5 max-w-md text-[0.72rem] leading-5 text-white/45 sm:text-xs sm:leading-6">
-                {t.networkDisclaimer}
-              </p>
-            </div>
-            <div className="grid gap-8 sm:grid-cols-3">
-              {groups.map((group) => (
-                <div key={group.title}>
-                  <h2 className="text-xs font-bold uppercase tracking-[.16em] text-white/50">
-                    {group.title}
-                  </h2>
-                  <ul className="mt-5 space-y-3">
-                    {group.links.map((link) => (
-                      <li key={link}>
-                        <a
-                          href="#"
-                          className="text-sm text-white/80 hover:text-white"
-                        >
-                          {link}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-4 pt-7 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {new Date().getFullYear()} ABALT Ecuador. {t.rights}
-          </p>
-          <div className="flex gap-5">
-            <a href="/privacidad" className="hover:text-white">
-              {t.privacy}
-            </a>
-            <a href="/accesibilidad" className="hover:text-white">
-              {t.accessibility}
-            </a>
-          </div>
+    <footer lang="es" className="border-t border-line bg-surface font-sans text-ink">
+      <div className="section-shell flex flex-col items-start gap-6 py-10 md:flex-row md:gap-6">
+        <Image src="/abalt-logo.png" alt="ABALT" width={120} height={38} className="block shrink-0 self-start object-top" />
+        <div className="min-w-0 flex-1 self-start text-start">
+        <p className="m-0 text-sm leading-5 text-muted-foreground">
+          © 2026 ABALT - Cada una de las firmas miembro es una entidad legal separada y no tiene ninguna responsabilidad derivada de los actos u omisiones de la otra entidad.
+        </p>
+        <nav aria-label="Información legal" className="mt-1">
+          <ul className="flex flex-col items-start gap-1 sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-1">
+            {legalLinks.map(({ label, href }) => (
+              <li key={href}>
+                <Link href={href} prefetch={false} className="inline-flex min-h-8 items-center text-xs font-medium underline decoration-line underline-offset-4 transition-colors hover:text-abalt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-abalt">
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
         </div>
       </div>
     </footer>

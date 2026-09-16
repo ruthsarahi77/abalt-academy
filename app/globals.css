@@ -1,8 +1,47 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "vanilla-cookieconsent/dist/cookieconsent.css";
 
 @custom-variant dark (&:is(.dark *));
+
+#cc-main {
+  --cc-font-family: var(--font-sans);
+  --cc-bg: var(--background);
+  --cc-primary-color: var(--ink);
+  --cc-secondary-color: var(--ink);
+  --cc-btn-primary-bg: var(--ink);
+  --cc-btn-primary-hover-bg: var(--abalt-red);
+  --cc-btn-primary-border-color: var(--ink);
+  --cc-btn-primary-hover-border-color: var(--abalt-red);
+  --cc-btn-secondary-bg: var(--surface);
+  --cc-btn-secondary-color: var(--ink);
+  --cc-btn-secondary-border-color: var(--border);
+  --cc-btn-secondary-hover-bg: var(--border);
+  --cc-btn-secondary-hover-border-color: var(--border);
+  --cc-toggle-on-bg: var(--abalt-red);
+  --cc-separator-border-color: var(--border);
+  --cc-cookie-category-block-bg: var(--surface);
+  --cc-cookie-category-block-border: var(--border);
+  --cc-footer-bg: var(--surface);
+  --cc-footer-border-color: var(--border);
+  --cc-modal-border-radius: var(--radius);
+  --cc-btn-border-radius: var(--radius);
+  --cc-modal-transition-duration: 0s;
+  direction: ltr;
+}
+
+#cc-main .cm__title,
+#cc-main .pm__title,
+#cc-main .pm__section-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+#cc-main :focus-visible {
+  outline: 3px solid var(--abalt-red);
+  outline-offset: 3px;
+}
 
 :root {
   --abalt-red: #c8102e;
@@ -28,6 +67,13 @@
   --input: #cfd3d5;
   --ring: #c8102e;
   --radius: 0.375rem;
+  /* Reuse the existing heading scale; component utilities keep their overrides. */
+  --type-title-size: clamp(2.75rem, 7vw, 5.5rem);
+  --type-section-size: clamp(2rem, 5vw, 3.35rem);
+  --type-card-size: var(--text-xl);
+  --type-heading-leading: 1.15;
+  --type-heading-tracking: -0.025em;
+  --type-body-leading: 1.5;
 }
 
 @theme inline {
@@ -54,11 +100,51 @@
   --color-line: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-sans: var(--font-open-sans);
-  --font-heading: var(--font-open-sans);
+  --font-sans: var(--font-open-sans), Arial, sans-serif;
+  --font-heading: var(--font-guardian-sans), var(--font-open-sans), Arial, sans-serif;
   --radius-sm: calc(var(--radius) * 0.66);
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) * 1.33);
+}
+
+@layer base {
+  body {
+    font-size: var(--text-base);
+    line-height: var(--type-body-leading);
+  }
+
+  /* h3 is the existing card-title convention. Smaller UI headings inherit Open Sans. */
+  h1, h2, h3, .section-title, .card-title {
+    font-family: var(--font-heading);
+    font-synthesis: none;
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--type-heading-leading);
+    letter-spacing: var(--type-heading-tracking);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--type-title-size);
+    font-weight: var(--font-weight-bold);
+  }
+
+  h2 {
+    font-size: var(--type-section-size);
+  }
+
+  h3, .card-title {
+    font-size: var(--type-card-size);
+  }
+
+  button, input, select, textarea, label, nav {
+    font-family: var(--font-sans);
+  }
+}
+
+/* Also disable artificial faces for opt-in editorial use (font-heading font-normal). */
+@utility font-heading {
+  font-family: var(--font-heading);
+  font-synthesis: none;
 }
 
 * {
@@ -113,10 +199,10 @@ body {
 }
 .section-title {
   margin-top: 0.6rem;
-  font-size: clamp(2rem, 5vw, 3.35rem);
-  font-weight: 600;
-  letter-spacing: -0.045em;
-  line-height: 1.05;
+  font-size: var(--type-section-size);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--type-heading-tracking);
+  line-height: var(--type-heading-leading);
 }
 .section-description {
   margin-top: 1.25rem;
@@ -134,7 +220,7 @@ body {
   gap: 0.3rem;
   padding-inline: 0.8rem;
   color: var(--ink);
-  font-size: 0.82rem;
+  font-size: var(--text-sm);
   font-weight: 700;
   white-space: nowrap;
   transition: color 0.15s;
@@ -142,18 +228,18 @@ body {
 .nav-link::after {
   position: absolute;
   inset-inline: 0.8rem;
-  bottom: 0;
+  top: calc(50% + 0.75em + 3px);
   height: 2px;
   background: var(--abalt-red);
   content: "";
   transform: scaleX(0);
   transition: transform 0.18s;
 }
-.nav-link:hover,
 .nav-dropdown[open] > .nav-link {
   color: var(--abalt-red);
 }
 .nav-link:hover::after,
+.nav-link[aria-current="page"]::after,
 .nav-dropdown[open] > .nav-link::after {
   transform: scaleX(1);
 }
@@ -229,129 +315,6 @@ body {
 }
 .locale-select-language {
   min-width: 6.75rem;
-}
-
-.content-visual {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  min-height: 11rem;
-  background: #dfe2e3;
-  color: #fff;
-}
-.content-visual::before,
-.knowledge-visual::before {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    130deg,
-    transparent 0 40%,
-    rgba(255, 255, 255, 0.16) 40% 56%,
-    transparent 56%
-  );
-  content: "";
-}
-.content-visual::after {
-  position: absolute;
-  inset: -20% -10% auto auto;
-  width: 68%;
-  aspect-ratio: 1;
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  border-radius: 50%;
-  content: "";
-}
-.content-visual-publication {
-  background: #3d4447;
-}
-.content-visual-newsletter {
-  background: #7b1c2c;
-}
-.content-visual-podcast {
-  background: #36383a;
-}
-.content-visual-mark {
-  position: absolute;
-  inset: auto auto 1.1rem 1.25rem;
-  z-index: 1;
-  font-size: 3rem;
-  font-weight: 300;
-  line-height: 1;
-}
-.content-visual-label {
-  position: absolute;
-  inset: 1rem 1rem auto auto;
-  z-index: 1;
-  font-size: 0.6rem;
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
-.knowledge-card {
-  display: block;
-  transition: color 0.2s;
-}
-.knowledge-card:hover h3 {
-  color: var(--abalt-red);
-}
-.knowledge-visual {
-  position: relative;
-  display: flex;
-  aspect-ratio: 16/7;
-  align-items: flex-end;
-  overflow: hidden;
-  padding: 1.25rem;
-  background: #34383a;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-}
-.knowledge-visual-audio {
-  background: #7b1c2c;
-}
-.knowledge-visual-learning {
-  background: #555d61;
-}
-.knowledge-visual-video {
-  background: #222526;
-}
-.knowledge-visual-article {
-  background: #777e80;
-}
-.knowledge-visual-guide {
-  background: #4e2630;
-}
-.filter-chip {
-  min-height: 2.65rem;
-  border: 1px solid var(--border);
-  background: #fff;
-  padding: 0.55rem 1rem;
-  font-size: 0.8rem;
-  font-weight: 700;
-  transition:
-    border-color 0.15s,
-    color 0.15s,
-    background 0.15s;
-}
-.filter-chip:hover {
-  border-color: var(--abalt-red);
-  color: var(--abalt-red);
-}
-.filter-chip-active {
-  border-color: var(--ink);
-  background: var(--ink);
-  color: #fff;
-}
-.filter-chip-active:hover {
-  border-color: var(--ink);
-  color: #fff;
-}
-.podcast-cover {
-  background:
-    radial-gradient(circle at 50% 50%, #5b6062 0 2px, transparent 3px) 0 0/18px
-      18px,
-    #292d2f;
 }
 
 @media (min-width: 640px) {

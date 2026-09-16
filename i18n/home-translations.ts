@@ -12,6 +12,8 @@ export type HomeTranslation = {
   programs: string;
   calendar: string;
   news: string;
+  store: string;
+  mainNavigation: string;
   events: string;
   about: string;
   openMenu: string;
@@ -21,41 +23,24 @@ export type HomeTranslation = {
   searchLabel: string;
   searchEmpty: string;
   searchResults: string;
-  featured: string;
-  readPublication: string;
-  exploreKnowledge: string;
+  readNews: string;
+  viewNews: string;
+  latestCourses: string;
+  latestProducts: string;
+  viewAllCourses: string;
+  viewAllProducts: string;
+  viewContent: string;
+  contentComingSoon: string;
+  courseStatusdraft: string;
+  courseStatusupcoming: string;
+  courseStatusopen: string;
+  courseStatusclosed: string;
+  courseStatuscompleted: string;
   explore: string;
-  categoryPublications: string;
-  categoryPodcast: string;
-  categoryCourses: string;
-  categoryVideos: string;
-  categoryArticles: string;
-  categoryGuides: string;
-  videosWebinars: string;
-  latestPublications: string;
+  latestNews: string;
   all: string;
-  filterAudit: string;
-  filterIfrs: string;
-  filterTax: string;
-  filterLegal: string;
-  filterSustainability: string;
-  filterTechnology: string;
   read: string;
-  viewAllPublications: string;
-  newEpisode: string;
-  listenEpisode: string;
-  availableOn: string;
-  exploreTopics: string;
-  topicAudit: string;
-  topicAccounting: string;
-  topicTax: string;
-  topicFinance: string;
-  topicLegal: string;
-  topicRisk: string;
-  topicSustainability: string;
-  topicTechnology: string;
-  topicFamily: string;
-  topicTalent: string;
+  viewAllNews: string;
   internationalEyebrow: string;
   internationalTitle: string;
   internationalText: string;
@@ -68,14 +53,24 @@ export type HomeTranslation = {
   privacy: string;
   accessibility: string;
   imageFallback: string;
-  publicationsPageTitle: string;
-  publicationsPageDescription: string;
-  publicationsHeroImageAlt: string;
+  newsPageTitle: string;
+  newsHeroImageAlt: string;
   exploreByYear: string;
   allYears: string;
 };
 
 const en: HomeTranslation = {
+  latestCourses: "Latest courses",
+  latestProducts: "Latest store products",
+  viewAllCourses: "View all courses",
+  viewAllProducts: "View store",
+  viewContent: "View details",
+  contentComingSoon: "New content coming soon.",
+  courseStatusdraft: "Draft",
+  courseStatusupcoming: "Coming soon",
+  courseStatusopen: "Registration open",
+  courseStatusclosed: "Registration closed",
+  courseStatuscompleted: "Completed",
   knowledge: "Knowledge",
   academy: "Academy",
   articles: "Articles",
@@ -86,51 +81,18 @@ const en: HomeTranslation = {
   webinars: "Webinars",
   programs: "Programs",
   calendar: "Coming soon / Calendar",
-  news: "News",
   events: "Events",
   about: "About us",
   openMenu: "Open menu",
   closeMenu: "Close menu",
   searchTitle: "What are you looking for?",
-  searchPlaceholder: "Search publications, courses, podcasts, news...",
+  searchPlaceholder: "Search news, courses, podcasts...",
   searchLabel: "Search ABALT Academy",
   searchEmpty: "No content matches your search.",
   searchResults: "Search results",
-  featured: "Featured",
-  readPublication: "Read publication",
-  exploreKnowledge: "Explore our knowledge",
   explore: "Explore",
-  categoryPublications: "Studies, reports and technical analysis",
-  categoryPodcast: "Conversations with experts",
-  categoryCourses: "Specialized learning",
-  categoryVideos: "Audiovisual content",
-  categoryArticles: "Perspectives from our specialists",
-  categoryGuides: "Practical resources and in-depth studies",
-  videosWebinars: "Videos & Webinars",
-  latestPublications: "Latest publications",
   all: "All",
-  filterAudit: "Audit",
-  filterIfrs: "IFRS",
-  filterTax: "Tax",
-  filterLegal: "Legal",
-  filterSustainability: "Sustainability",
-  filterTechnology: "Technology",
   read: "Read",
-  viewAllPublications: "View all publications",
-  newEpisode: "New episode",
-  listenEpisode: "Listen to episode",
-  availableOn: "Available on",
-  exploreTopics: "Explore by topic",
-  topicAudit: "Audit & Assurance",
-  topicAccounting: "Accounting & IFRS",
-  topicTax: "Tax",
-  topicFinance: "Finance",
-  topicLegal: "Legal",
-  topicRisk: "Risk & Compliance",
-  topicSustainability: "Sustainability",
-  topicTechnology: "Technology & Innovation",
-  topicFamily: "Family Business",
-  topicTalent: "Talent & Leadership",
   internationalEyebrow: "ABALT INTERNATIONAL",
   internationalTitle: "Local knowledge. Global perspective.",
   internationalText:
@@ -145,15 +107,31 @@ const en: HomeTranslation = {
   privacy: "Privacy",
   accessibility: "Accessibility",
   imageFallback: "Editorial image",
-  publicationsPageTitle: "Publications",
-  publicationsPageDescription:
-    "Analysis, perspectives and specialized knowledge to support better business decisions.",
-  publicationsHeroImageAlt:
+  newsHeroImageAlt:
     "Professional reviewing business publications and analysis",
   exploreByYear: "Explore by year",
   allYears: "All",
+  news: "News",
+  store: "Store",
+  mainNavigation: "Main navigation",
+  newsPageTitle: "News",
+  latestNews: "Latest news",
+  viewAllNews: "View all news",
+  readNews: "Read news",
+  viewNews: "View news",
 };
 const es: HomeTranslation = {
+  latestCourses: "Últimos cursos",
+  latestProducts: "Últimos productos de Tienda",
+  viewAllCourses: "Ver todos los cursos",
+  viewAllProducts: "Ver tienda",
+  viewContent: "Ver detalle",
+  contentComingSoon: "Próximamente encontrarás nuevos contenidos.",
+  courseStatusdraft: "Borrador",
+  courseStatusupcoming: "Próximamente",
+  courseStatusopen: "Inscripciones abiertas",
+  courseStatusclosed: "Inscripciones cerradas",
+  courseStatuscompleted: "Finalizado",
   knowledge: "Conocimiento",
   academy: "Academy",
   articles: "Artículos",
@@ -164,51 +142,18 @@ const es: HomeTranslation = {
   webinars: "Webinars",
   programs: "Programas",
   calendar: "Próximamente / Calendario",
-  news: "Actualidad",
   events: "Eventos",
   about: "Nosotros",
   openMenu: "Abrir menú",
   closeMenu: "Cerrar menú",
   searchTitle: "¿Qué estás buscando?",
-  searchPlaceholder: "Buscar publicaciones, cursos, podcasts, noticias...",
+  searchPlaceholder: "Buscar noticias, cursos, podcasts...",
   searchLabel: "Buscar en ABALT Academy",
   searchEmpty: "No encontramos contenidos para tu búsqueda.",
   searchResults: "Resultados de búsqueda",
-  featured: "Destacado",
-  readPublication: "Leer publicación",
-  exploreKnowledge: "Explora nuestro conocimiento",
   explore: "Explorar",
-  categoryPublications: "Estudios, informes y análisis técnicos",
-  categoryPodcast: "Conversaciones con expertos",
-  categoryCourses: "Formación especializada",
-  categoryVideos: "Contenido audiovisual",
-  categoryArticles: "Perspectivas de nuestros especialistas",
-  categoryGuides: "Recursos prácticos y estudios en profundidad",
-  videosWebinars: "Videos & Webinars",
-  latestPublications: "Últimas publicaciones",
   all: "Todos",
-  filterAudit: "Auditoría",
-  filterIfrs: "NIIF",
-  filterTax: "Tributación",
-  filterLegal: "Legal",
-  filterSustainability: "Sostenibilidad",
-  filterTechnology: "Tecnología",
   read: "Leer",
-  viewAllPublications: "Ver todas las publicaciones",
-  newEpisode: "Nuevo episodio",
-  listenEpisode: "Escuchar episodio",
-  availableOn: "Disponible en",
-  exploreTopics: "Explora por tema",
-  topicAudit: "Auditoría y Aseguramiento",
-  topicAccounting: "Contabilidad y NIIF",
-  topicTax: "Tributación",
-  topicFinance: "Finanzas",
-  topicLegal: "Legal",
-  topicRisk: "Riesgos y Compliance",
-  topicSustainability: "Sostenibilidad",
-  topicTechnology: "Tecnología e Innovación",
-  topicFamily: "Empresas Familiares",
-  topicTalent: "Talento y Liderazgo",
   internationalEyebrow: "ABALT INTERNATIONAL",
   internationalTitle: "Conocimiento local. Perspectiva global.",
   internationalText:
@@ -223,13 +168,18 @@ const es: HomeTranslation = {
   privacy: "Privacidad",
   accessibility: "Accesibilidad",
   imageFallback: "Imagen editorial",
-  publicationsPageTitle: "Publicaciones",
-  publicationsPageDescription:
-    "Análisis, perspectivas y conocimiento especializado para apoyar mejores decisiones empresariales.",
-  publicationsHeroImageAlt:
+  newsHeroImageAlt:
     "Profesional revisando publicaciones y análisis empresariales",
   exploreByYear: "Explorar por año",
   allYears: "Todas",
+  news: "Noticias",
+  store: "Tienda",
+  mainNavigation: "Navegación principal",
+  newsPageTitle: "Noticias",
+  latestNews: "Últimas noticias",
+  viewAllNews: "Ver todas las noticias",
+  readNews: "Leer noticia",
+  viewNews: "Ver noticia",
 };
 
 const localized = (overrides: Partial<HomeTranslation>): HomeTranslation => ({
@@ -244,103 +194,124 @@ export const homeTranslations: Record<LanguageCode, HomeTranslation> = {
     articles: "Artigos",
     guides: "Guias e estudos",
     courses: "Cursos",
-    news: "Atualidade",
     events: "Eventos",
     about: "Sobre nós",
     searchTitle: "O que você está procurando?",
-    featured: "Destaque",
-    exploreKnowledge: "Explore nosso conhecimento",
-    latestPublications: "Últimas publicações",
-    exploreTopics: "Explore por tema",
     read: "Ler",
     explore: "Explorar",
+  news: "Notícias",
+  store: "Loja",
+  mainNavigation: "Navegação principal",
+  newsPageTitle: "Notícias",
+  latestNews: "Últimas notícias",
+  viewAllNews: "Ver todas as notícias",
+  readNews: "Ler notícia",
+  viewNews: "Ver notícia",
   }),
   fr: localized({
     knowledge: "Connaissances",
     articles: "Articles",
     guides: "Guides et études",
     courses: "Cours",
-    news: "Actualités",
     events: "Événements",
     about: "À propos",
     searchTitle: "Que recherchez-vous ?",
-    featured: "À la une",
-    exploreKnowledge: "Explorez nos connaissances",
-    latestPublications: "Dernières publications",
-    exploreTopics: "Explorer par thème",
     read: "Lire",
     explore: "Explorer",
+  news: "Actualités",
+  store: "Boutique",
+  mainNavigation: "Navigation principale",
+  newsPageTitle: "Actualités",
+  latestNews: "Dernières actualités",
+  viewAllNews: "Voir toutes les actualités",
+  readNews: "Lire l’actualité",
+  viewNews: "Voir l’actualité",
   }),
   de: localized({
     knowledge: "Wissen",
     articles: "Artikel",
     guides: "Leitfäden und Studien",
     courses: "Kurse",
-    news: "Aktuelles",
     events: "Veranstaltungen",
     about: "Wir über uns",
     searchTitle: "Wonach suchen Sie?",
-    featured: "Im Fokus",
-    exploreKnowledge: "Entdecken Sie unser Wissen",
-    latestPublications: "Neueste Publikationen",
-    exploreTopics: "Nach Thema entdecken",
     read: "Lesen",
     explore: "Entdecken",
+  news: "Nachrichten",
+  store: "Shop",
+  mainNavigation: "Hauptnavigation",
+  newsPageTitle: "Nachrichten",
+  latestNews: "Neueste Nachrichten",
+  viewAllNews: "Alle Nachrichten ansehen",
+  readNews: "Nachricht lesen",
+  viewNews: "Nachricht ansehen",
   }),
   ar: localized({
     knowledge: "المعرفة",
     articles: "مقالات",
     guides: "أدلة ودراسات",
     courses: "دورات",
-    news: "أخبار",
     events: "فعاليات",
     about: "من نحن",
     searchTitle: "عمّ تبحث؟",
-    featured: "مميز",
-    exploreKnowledge: "استكشف معرفتنا",
-    latestPublications: "أحدث المنشورات",
-    exploreTopics: "استكشف حسب الموضوع",
+  news: "أخبار",
+  store: "المتجر",
+  mainNavigation: "التنقل الرئيسي",
+  newsPageTitle: "أخبار",
+  latestNews: "أحدث الأخبار",
+  viewAllNews: "عرض جميع الأخبار",
+  readNews: "قراءة الخبر",
+  viewNews: "عرض الخبر",
   }),
   zh: localized({
     knowledge: "知识",
     articles: "文章",
     guides: "指南与研究",
     courses: "课程",
-    news: "资讯",
     events: "活动",
     about: "关于我们",
     searchTitle: "您在寻找什么？",
-    featured: "精选",
-    exploreKnowledge: "探索我们的知识",
-    latestPublications: "最新出版物",
-    exploreTopics: "按主题探索",
+  news: "资讯",
+  store: "商店",
+  mainNavigation: "主导航",
+  newsPageTitle: "资讯",
+  latestNews: "最新资讯",
+  viewAllNews: "查看所有资讯",
+  readNews: "阅读资讯",
+  viewNews: "查看资讯",
   }),
   ja: localized({
     knowledge: "知識",
     articles: "記事",
     guides: "ガイドと調査",
     courses: "コース",
-    news: "ニュース",
     events: "イベント",
     about: "私たちについて",
     searchTitle: "何をお探しですか？",
-    featured: "注目",
-    exploreKnowledge: "知識を探る",
-    latestPublications: "最新の出版物",
-    exploreTopics: "テーマから探す",
+  news: "ニュース",
+  store: "ストア",
+  mainNavigation: "メインナビゲーション",
+  newsPageTitle: "ニュース",
+  latestNews: "最新ニュース",
+  viewAllNews: "すべてのニュースを見る",
+  readNews: "ニュースを読む",
+  viewNews: "ニュースを見る",
   }),
   ko: localized({
     knowledge: "지식",
     articles: "글",
     guides: "가이드 및 연구",
     courses: "강좌",
-    news: "소식",
     events: "이벤트",
     about: "회사 소개",
     searchTitle: "무엇을 찾고 계신가요?",
-    featured: "주요 콘텐츠",
-    exploreKnowledge: "지식 탐색",
-    latestPublications: "최신 간행물",
-    exploreTopics: "주제별 탐색",
+  news: "소식",
+  store: "스토어",
+  mainNavigation: "주 탐색",
+  newsPageTitle: "소식",
+  latestNews: "최신 소식",
+  viewAllNews: "모든 소식 보기",
+  readNews: "소식 읽기",
+  viewNews: "소식 보기",
   }),
 };

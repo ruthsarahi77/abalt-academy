@@ -3,54 +3,47 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import type { Publication } from "@/data/publications";
-import { getContentUrl, localizeContent } from "@/data/content-types";
+import { localizeContent, type NewsItem } from "@/data/content-types";
 import { formatContentDate } from "@/lib/content";
 import { useLocale } from "@/components/LocaleProvider";
 
 type YearFilter = "all" | number;
 
-export function PublicationsArchive({ publications }: { publications: Publication[] }) {
+export function NewsArchive({ news }: { news: NewsItem[] }) {
   const { t } = useLocale();
   const years = useMemo(
-    () => [...new Set(publications.map((item) => item.year))].sort((a, b) => b - a),
-    [publications],
+    () => [...new Set(news.map((item) => Number(item.date.slice(0, 4))))].sort((a, b) => b - a),
+    [news],
   );
   const [selectedYear, setSelectedYear] = useState<YearFilter>(years[0] ?? "all");
-  const groupedPublications = useMemo(() => {
-    const visible = publications
-      .filter((item) => selectedYear === "all" || item.year === selectedYear)
-      .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  const groupedNews = useMemo(() => {
+    const visible = news
+      .filter((item) => selectedYear === "all" || Number(item.date.slice(0, 4)) === selectedYear)
+      .sort((a, b) => b.date.localeCompare(a.date));
 
     return years
-      .map((year) => ({ year, items: visible.filter((item) => item.year === year) }))
+      .map((year) => ({ year, items: visible.filter((item) => Number(item.date.slice(0, 4)) === year) }))
       .filter((group) => group.items.length > 0);
-  }, [publications, selectedYear, years]);
+  }, [news, selectedYear, years]);
 
   return (
     <>
-      <section className="border-b border-line bg-surface" aria-labelledby="publications-page-title">
-        <div className="section-shell grid gap-8 py-10 sm:py-12 lg:grid-cols-[1.15fr_.85fr] lg:items-center lg:py-14">
-          <div className="max-w-3xl">
-            <p className="section-eyebrow">ABALT Academy</p>
-            <h1
-              id="publications-page-title"
-              className="mt-3 text-4xl font-semibold leading-none tracking-[-.045em] sm:text-5xl lg:text-6xl"
-            >
-              {t.publicationsPageTitle}
-            </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-              {t.publicationsPageDescription}
-            </p>
-          </div>
-          <div className="relative aspect-[16/7] overflow-hidden lg:aspect-[16/8]">
+      <section className="bg-white" aria-labelledby="news-page-title">
+        <div className="section-shell pt-10 sm:pt-12 lg:pt-14">
+          <h1
+            id="news-page-title"
+            className="mb-6 font-heading text-4xl font-bold leading-none tracking-[-.045em] sm:mb-8 sm:text-5xl lg:text-6xl"
+          >
+            {t.newsPageTitle}
+          </h1>
+          <div className="relative aspect-[3/1] w-full overflow-hidden lg:aspect-[3.5/1]">
             <Image
               src="/images/knowledge/editorial.webp"
-              alt={t.publicationsHeroImageAlt}
+              alt={t.newsHeroImageAlt}
               fill
               priority
               className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 42vw"
+              sizes="(min-width: 1440px) 1360px, (min-width: 1280px) calc(100vw - 80px), (min-width: 640px) calc(100vw - 64px), calc(100vw - 40px)"
             />
           </div>
         </div>
@@ -89,7 +82,7 @@ export function PublicationsArchive({ publications }: { publications: Publicatio
           </div>
 
           <div className="mt-8">
-            {groupedPublications.map((group) => (
+            {groupedNews.map((group) => (
               <section key={group.year} className="mt-12 first:mt-0" aria-labelledby={`year-${group.year}`}>
                 <h2
                   id={`year-${group.year}`}
@@ -98,8 +91,8 @@ export function PublicationsArchive({ publications }: { publications: Publicatio
                   {group.year}
                 </h2>
                 <div>
-                  {group.items.map((publication) => (
-                    <PublicationRow key={publication.id} publication={publication} />
+                  {group.items.map((item) => (
+                    <NewsRow key={item.id} item={item} />
                   ))}
                 </div>
               </section>
@@ -136,21 +129,21 @@ function YearChip({
   );
 }
 
-function PublicationRow({ publication }: { publication: Publication }) {
+function NewsRow({ item }: { item: NewsItem }) {
   const { t, language } = useLocale();
-  const content = localizeContent(publication, language);
+  const content = localizeContent(item, language);
 
   return (
     <article className="group grid gap-4 border-b border-line py-7 sm:py-8 lg:grid-cols-[10rem_minmax(0,1fr)_12rem] lg:gap-8">
       <p className="flex items-center gap-3 self-start text-xs font-extrabold uppercase tracking-[.12em] text-muted-foreground">
         <span aria-hidden="true" className="size-2 shrink-0 rounded-full bg-abalt" />
-        <time dateTime={publication.publishedAt}>
-          {formatContentDate(publication.publishedAt, language).toLocaleUpperCase()}
+        <time dateTime={item.date}>
+          {formatContentDate(item.date, language).toLocaleUpperCase()}
         </time>
       </p>
       <div className="max-w-3xl">
         <h3 className="text-xl font-semibold leading-snug tracking-[-.025em] transition-colors group-hover:text-abalt sm:text-2xl">
-          <a href={getContentUrl(publication)} target="_blank" rel="noopener noreferrer">
+          <a href={item.pdfUrl} target="_blank" rel="noopener noreferrer">
             {content.title}
           </a>
         </h3>
@@ -158,16 +151,16 @@ function PublicationRow({ publication }: { publication: Publication }) {
           {content.description}
         </p>
         <p className="mt-4 text-xs font-bold uppercase tracking-[.14em] text-abalt">
-          {content.category ?? publication.contentType}
+          {content.category ?? item.contentType}
         </p>
       </div>
       <a
-        href={getContentUrl(publication)}
+        href={item.pdfUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex min-h-11 items-center gap-2 self-end justify-self-start border-b border-ink text-sm font-bold transition-colors hover:border-abalt hover:text-abalt lg:justify-self-end"
       >
-        {t.readPublication}
+        {t.readNews}
         <ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-1" />
         <span className="sr-only">PDF, {t.newTab}</span>
       </a>

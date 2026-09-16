@@ -1,5 +1,8 @@
 "use client";
-import { Menu, ChevronDown } from "lucide-react";
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu } from "lucide-react";
 import { navItems } from "@/data/navigation";
 import {
   Sheet,
@@ -15,9 +18,11 @@ import { useLocale } from "../LocaleProvider";
 
 export function MobileNav() {
   const { t } = useLocale();
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
   return (
     <div className="lg:hidden">
-      <Sheet>
+      <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger
           aria-label={t.openMenu}
           className="inline-flex size-11 items-center justify-center border border-line bg-white text-ink"
@@ -25,7 +30,7 @@ export function MobileNav() {
           <Menu aria-hidden="true" />
         </SheetTrigger>
         <SheetContent
-          className="w-[min(92vw,25rem)] gap-0 bg-white"
+          className="w-[min(92vw,25rem)] gap-0 overflow-y-auto bg-white"
           aria-label={t.openMenu}
         >
           <SheetHeader className="border-b border-line px-6 py-5">
@@ -34,37 +39,19 @@ export function MobileNav() {
           </SheetHeader>
           <nav
             className="overflow-y-auto px-6 py-4"
-            aria-label={t.publicationsNav}
+            aria-label={t.mainNavigation}
           >
-            {navItems.map((item) =>
-              item.children ? (
-                <details key={item.labelKey} className="border-b border-line">
-                  <summary className="flex cursor-pointer list-none items-center justify-between py-4 text-base font-bold">
-                    {t[item.labelKey]}
-                    <ChevronDown aria-hidden="true" className="size-4" />
-                  </summary>
-                  <div className="pb-3 ps-4">
-                    {item.children.map((child) => (
-                      <a
-                        key={child.labelKey}
-                        href={child.href}
-                        className="block py-2.5 text-sm text-muted-foreground"
-                      >
-                        {t[child.labelKey]}
-                      </a>
-                    ))}
-                  </div>
-                </details>
-              ) : (
-                <a
-                  key={item.labelKey}
-                  href={item.href}
-                  className="block border-b border-line py-4 text-base font-bold"
-                >
-                  {t[item.labelKey]}
-                </a>
-              ),
-            )}
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                aria-current={pathname === item.href || pathname.startsWith(`${item.href}/`) ? "page" : undefined}
+                className="group block border-b border-line py-4 text-base font-bold"
+              >
+                <span className="decoration-abalt decoration-2 underline-offset-4 group-hover:underline group-aria-[current=page]:underline">{t[item.labelKey]}</span>
+              </Link>
+            ))}
           </nav>
           <div className="mt-auto grid gap-4 border-t border-line bg-surface p-6">
             <CountrySelector />

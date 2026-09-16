@@ -1,22 +1,24 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { PublicationsArchive } from "@/components/publications/PublicationsArchive";
-import { publications } from "@/data/publications";
+import { NewsletterContact } from "@/components/NewsletterContact";
+import { NewsArchive } from "@/components/news/NewsArchive";
+import { news } from "@/data/news";
 
 export const metadata: Metadata = {
-  title: "Publicaciones",
+  title: "Noticias",
   description:
     "Análisis, perspectivas y conocimiento especializado de ABALT Academy para apoyar mejores decisiones empresariales.",
-  alternates: { canonical: "/publicaciones" },
+  alternates: { canonical: "/noticias" },
 };
 
-export default function PublicationsPage() {
+export default function NewsPage() {
   return (
     <>
       <Header />
       <main>
-        <PublicationsArchive publications={publications} />
+        <NewsArchive news={news} />
+        <NewsletterContact />
       </main>
       <Footer />
     </>
